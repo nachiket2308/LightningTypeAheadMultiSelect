@@ -1,0 +1,26 @@
+Main component
+ManageCampaignMembers.cmp
+
+Sub components:
+TypeAHeadLoopup
+DisplayList
+SelectItem (event)
+RemoveItem (event)
+
+Lightning App
+ManageCampaignMembersApp
+
+Apex Class
+LightningUIController - server side controller
+
+Static Resources:
+* lodash - A modern JavaScript utility library delivering modularity, performance, & extras  
+https://lodash.com/
+
+
+* SLDS122 - Salesforce Lightning Design System
+https://www.lightningdesignsystem.com/resources/downloads/
+
+Example:
+VF page is used with Action on page layout
+ManageCampaignMembers

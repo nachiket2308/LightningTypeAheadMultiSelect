@@ -1,0 +1,45 @@
+<aura:component implements="force:appHostable" controller="LightningUIController">
+    <!-- Required Scripts/Styles -->
+    <ltng:require styles="/resource/SLDS122/assets/styles/salesforce-lightning-design-system-ltng.css" />
+    <ltng:require scripts="/resource/lodash" />
+    
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="Id" required="true" default="" description="The current record Id to display" />
+    <aura:attribute name="isInitialized" type="Boolean" default="false" description="Is doInit called?" />
+    <aura:attribute name="isDirty" type="Boolean" default="false" description="Are items changed?" />
+    <aura:attribute name="existingItems" type="LightningUIController.Result[]" description="The existing sharing users." />
+    <aura:attribute name="loadMethod" type="String" required="true" default="loadCampaignMembers" description="Load method on server" />
+    <aura:attribute name="saveMethod" type="String" required="true" default="saveCampaignMembers" description="Save method on server" />
+    
+    <!-- Methods -->
+    <aura:method name="post" action="{!c.doSave}" access="PUBLIC" description="Post method to be called externally"/>
+    <!-- Event handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:SelectItem" action="{!c.doAddItem}"/>
+    <aura:handler event="c:RemoveItem" action="{!c.doRemoveItem}"/>
+    
+    <!-- UI -->
+    <!-- Spinner -->
+    <center>
+        <div aura:id="_spinner2" class="lds-spinner--small slds-m-top--xxx-small slds-hide">
+            <img src="/resource/SLDS122/assets/images/spinners/slds_spinner_brand.gif" alt="Loading..." />
+        </div>
+        <ui:spinner aura:id="_spinner1" class="lds-spinner--small slds-m-top--xxx-small slds-hide"/>
+    </center>
+       
+    <c:spinner label="Loading..."
+               class="lds-spinner--small slds-m-top--xxx-small slds-hide"
+               image="/resource/SLDS122/assets/images/spinners/slds_spinner_brand.gif"/>
+      
+    <!-- User lookup -->
+    <c:TypeAheadLookup sObjectAPIName="Contact" 
+                       label="Contacts"
+                       icon="contact"
+                       listIconClass="slds-icon-standard-contact"/>
+    <!-- Existing user sharings -->
+    <c:DisplayList label="" 
+                   items="{!v.existingItems}"
+                   icon="contact"
+                   listIconClass="slds-icon-standard-contact"/>
+    
+</aura:component>

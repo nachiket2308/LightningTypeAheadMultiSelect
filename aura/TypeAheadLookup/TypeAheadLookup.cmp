@@ -1,0 +1,48 @@
+<aura:component controller="LightningUIController">
+    <!-- Required Scripts/Styles -->
+    <ltng:require styles="/resource/SLDS122/assets/styles/salesforce-lightning-design-system-ltng.css" />
+    
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="Id" description="The record Id selected" />
+    <aura:attribute name="sObjectAPIName" type="String" required="true" default="" description="The API name of the SObject to search" />
+    <aura:attribute name="label" type="String" required="true" default="" description="The plural label to assign to the lookup, eg: Users" />   
+    <aura:attribute name="icon" type="String" description="The SLDS class to use for the icon." />
+    <aura:attribute name="listIconClass" type="String" default="slds-icon-standard-product" description="The SLDS class to use for the icon." />
+    <aura:attribute name="searchString" type="String" description="The search string to find." />
+    <aura:attribute name="matches" type="LightningUIController.Result[]" description="The resulting matches returned by the Apex controller." />
+    <!-- Events -->
+	<aura:registerEvent name="selectItemEvent" type="c:SelectItem"/>    
+    
+    <div class="slds"> 
+        <div aura:id="lookup-div" class="slds-lookup slds-has-selection" data-select="multi" data-scope="single" data-typeahead="true">
+            <!-- This is the Input form markup -->
+            <div class="slds-form-element">
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                    <c:svg class="slds-input__icon" xlinkHref="/resource/SLDS122/assets/icons/utility-sprite/svg/symbols.svg#search" />
+                    <!-- This markup is for when searching for a string -->
+                    <ui:inputText aura:id="lookup" placeholder="{!'Search for ' + v.label}" value="{!v.searchString}" class="slds-input" 
+                                  updateOn="keyup" keyup="{!c.doSearch}" blur="{!c.doBlur}" />
+                </div>
+            </div>
+            <!-- This is the lookup list markup. Initially it's hidden -->
+            <div aura:id="lookuplist" class="slds-lookup__menu slds-hide" role="listbox">
+                <div class="slds-lookup__item">
+                    <button class="slds-button"> 
+                        <c:svg class="slds-icon slds-icon-text-default slds-icon--small" xlinkHref="/resource/SLDS122/assets/icons/utility-sprite/svg/symbols.svg#search" />
+                        &quot;{!v.searchString}&quot; in {!v.label}
+                    </button>
+                </div>
+                <ul aura:id="lookuplist-items" class="slds-lookup__list" role="presentation">
+                    <aura:iteration items="{!v.matches}" var="match">
+                        <li class="slds-lookup__item">
+                            <a id="{!match.Id}" role="option" onclick="{!c.addItem}">
+                               <c:svg class="{!'slds-icon ' + v.listIconClass + ' slds-icon--small'}" xlinkHref="{!'/resource/SLDS122/assets/icons/standard-sprite/svg/symbols.svg#' + v.icon}" />
+                               {!match.Name}&nbsp;-&nbsp;{!match.Description}
+                            </a>
+                        </li>
+                    </aura:iteration>
+                </ul>
+            </div>
+        </div>
+  </div>    
+</aura:component>

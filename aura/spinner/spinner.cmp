@@ -1,0 +1,11 @@
+<aura:component >
+	<aura:attribute name="label" type="String" description="Alternate label when spinner not loaded"/>
+    <aura:attribute name="class" type="String" description="SLDS class"/>
+    <aura:attribute name="image" type="String" description="Spinner animated gif"/>
+    
+    <center>
+        <div aura:id="_spinner" class="{!v.class}">
+            <img src="{!v.image}" alt="{!v.label}" />
+        </div>
+    </center>
+</aura:component>

@@ -1,0 +1,50 @@
+<apex:page standardController="Campaign" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+    <apex:includeLightning />
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">     
+    <head>
+       <apex:stylesheet value="{!URLFOR($Resource.SLDS122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+       <script src='/canvas/sdk/js/publisher.js'></script>
+     </head>  
+     
+     <body>
+        <div class="slds" style="margin-top:0px;margin-left:0px;">
+             <div id="_spinner" class="slds-spinner--large slds-container--center slds-show">
+                <img src="{!URLFOR($Resource.SLDS122,'/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+             </div>
+             <div id="lightning" class="slds-p-vertical--x-small" style="margin-top:0px;margin-left:0px;"/>
+        </div>
+      </body>
+    <script>
+        var campaignId = "{!Campaign.Id}";
+        var component;
+
+        $Lightning.use("c:ManageCampaignMembersApp", function() {
+          $Lightning.createComponent("c:ManageCampaignMembers",
+          {"recordId" : campaignId},
+          "lightning", 
+          function(cmp) { //callback function
+             //console.log('Loading completed.');
+             component = cmp;
+          });
+        });
+        
+
+        Sfdc.canvas.publisher.subscribe({name: "publisher.showPanel",
+            onData:function(e) {
+                Sfdc.canvas.publisher.publish({name:"publisher.setValidForSubmit", payload:"true"});
+                var spinner = document.getElementById("_spinner");
+                spinner.className = spinner.className.replace("slds-show",""); 
+                spinner.className = spinner.className + "slds-hide";
+        }});
+
+        Sfdc.canvas.publisher.subscribe({ 
+            name:"publisher.post",
+            onData: function(e){
+                component.post();
+                Sfdc.canvas.publisher.publish({name:"publisher.close",payload:{refresh:"true"}});
+            }    
+        })
+     </script>
+
+</html> 
+</apex:page>

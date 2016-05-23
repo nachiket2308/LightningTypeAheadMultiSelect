@@ -1,0 +1,46 @@
+<aura:component controller="LightningUIController">
+    <!-- Required Scripts/Styles -->
+    <ltng:require styles="/resource/SLDS122/assets/styles/salesforce-lightning-design-system-ltng.css" />
+    
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="Id" description="The current record Id" />
+    <aura:attribute name="label" type="String" required="true" default="Items" description="The label to assign to the list." />
+    <aura:attribute name="icon" type="String" description="The SLDS class to use for the icon." />
+    <aura:attribute name="listIconClass" type="String" description="The SLDS class to use for the icon." />
+	<aura:attribute name="items" type="LightningUIController.Result[]" description="The items to display." />
+    <!-- Events -->
+	<aura:registerEvent name="removeItemEvent" type="c:RemoveItem"/>    
+    
+    <!-- UI --> 
+    <label class="slds-form-element__label" for="lookup">{!v.label}</label> 
+       <aura:if isTrue="{!v.items.length>0}">
+         <!-- This is the existing item list markup. -->
+         <div aura:id="itemList" class="slds-col slds-m-right--x-medium slds-show" role="listbox">
+            <div class="slds-col"></div>
+            <ul aura:id="items" class="slds-lookup__list" role="presentation">
+             <aura:iteration items="{!v.items}" var="item">
+                <li id="{!'_item' + item.Id}" class="slds-list__item slds-pill">
+                <div class="slds-media slds-tile">
+                   <div class="slds-media__figure">
+                      <c:svg class="{!'slds-icon ' + v.listIconClass + ' slds-icon--medium'}" xlinkHref="{!'/resource/SLDS122/assets/icons/standard-sprite/svg/symbols.svg#' + v.icon}"/>
+                   </div>        
+                <div class="slds-media__body">
+                <p class="slds-tile__title slds-truncate"><a>{!item.Name}</a></p>
+                   <!--ul class="slds-tile__detail slds-list-/-horizontal slds-has-dividers slds-text-body-/-small"-->
+                     <!--li class="slds-truncate slds-list__item">{!item.Description}</li-->
+                   <!--/ul-->
+              </div>
+
+             <button id="{!item.Id}" class="slds-button slds-button--icon-bare" onclick="{!c.doRemove}">
+                 <c:svg class="slds-button__icon" xlinkHref="/resource/SLDS122/assets/icons/utility-sprite/svg/symbols.svg#close" />
+                 <span class="slds-assistive-text">Remove</span>
+             </button>      
+                      
+              </div>
+            </li>
+            </aura:iteration>
+          </ul>
+       </div>
+     </aura:if> 
+    
+</aura:component>

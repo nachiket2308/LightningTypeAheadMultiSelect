@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Remove Item Event">
+    <aura:attribute name="ItemId" type="Id" />
+</aura:event>
